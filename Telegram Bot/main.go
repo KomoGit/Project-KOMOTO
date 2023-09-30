@@ -1,41 +1,37 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"strconv"
+	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-// var numericKeyboard = tgbotapi.NewInlineKeyboardMarkup(
-// 	tgbotapi.NewInlineKeyboardRow(
-// 		tgbotapi.NewInlineKeyboardButtonURL("Apply \U00002705", "example.com"),
-// 		tgbotapi.NewInlineKeyboardButtonData("Save \U0001F4BE", "example.com"),
-// 	),
-// )
-
 var chatId int64 = GetChatId(os.Getenv("TELEGRAM_CHAT_ID"))
+var apiLink string = os.Getenv("API_LINK")
+
+const SLEEP_DURATION = time.Second * time.Duration(5)
 
 type Job struct {
-	title       string
-	description string
-	link        string
+	Title       string `json:"title"`
+	Description string `json:"description"`
+	Link        string `json:"link"`
 }
 
 func main() {
-	// var jobs []Job
-	// Insert a sample job into the slice
-	sampleJob := Job{
-		title:       "Software Engineer",
-		description: "Develop software applications.",
-		link:        "google.com",
+
+	for _, item := range GetJobs() {
+		BotController(item)
+		time.Sleep(SLEEP_DURATION)
 	}
+}
 
-	// // Append the sample job to the slice
-	// jobs = append(jobs, sampleJob)
-
+func BotController(sampleJob Job) {
 	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APITOKEN"))
 	if err != nil {
 		log.Panic(err)
@@ -46,52 +42,57 @@ func main() {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	updates := bot.GetUpdatesChan(u)
-
-	// Loop through each update.
-	for update := range updates {
-		// Check if we've gotten a message update.
-		if update.Message != nil {
-			// Construct a new message from the given chat ID and containing
-			// the text that we received.
-			msg := tgbotapi.NewMessage(chatId, SendJob(sampleJob))
-			msg.ReplyMarkup = SendKeyboard(sampleJob)
-			// Send the message.
-			if _, err = bot.Send(msg); err != nil {
-				panic(err)
-			}
-		} else if update.CallbackQuery != nil {
-			// Respond to the callback query, telling Telegram to show the user
-			// a message with the data received.
-			callback := tgbotapi.NewCallback(update.CallbackQuery.ID, update.CallbackQuery.Data)
-			if _, err := bot.Request(callback); err != nil {
-				panic(err)
-			}
-
-			// And finally, send a message containing the data received.
-			msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, update.CallbackQuery.Data)
-			if _, err := bot.Send(msg); err != nil {
-				panic(err)
-			}
-		}
+	msg := tgbotapi.NewMessage(chatId, SendJob(sampleJob))
+	msg.ReplyMarkup = SendKeyboard(sampleJob)
+	// Send the message.
+	if _, err = bot.Send(msg); err != nil {
+		panic(err)
 	}
 }
 
-func GetChatId(envVar string) int64 {
-	if n, err := strconv.ParseInt(envVar, 10, 64); err == nil {
+func GetChatId(str string) int64 {
+	if n, err := strconv.ParseInt(str, 10, 64); err == nil {
 		return n
 	}
 	return 0
 }
 
 func SendJob(job Job) string {
-	return fmt.Sprintf("%s \n%s", job.title, job.description)
+	return fmt.Sprintf("%s \n%s", job.Title, job.Description)
 }
 
 func SendKeyboard(job Job) tgbotapi.InlineKeyboardMarkup {
 	return tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonURL("Apply \U00002705", job.link),
-			tgbotapi.NewInlineKeyboardButtonData("Save \U0001F4BE", "example.com"),
+			tgbotapi.NewInlineKeyboardButtonURL("Auto Apply \U00002705", job.Link),
+			tgbotapi.NewInlineKeyboardButtonURL("Save \U0001F4BE", "www.example.com"),
 		))
+}
+
+func GetJobs() []Job {
+	var allItems []Job
+	resp, err := http.Get(apiLink)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer resp.Body.Close()
+
+	// URL of the API endpoint
+	for {
+
+		var items []Job
+		if err := json.NewDecoder(resp.Body).Decode(&items); err != nil { //All 30 items in single sequence got added to items
+			log.Fatal(err)
+		}
+
+		// Append items to the slice
+		allItems = append(allItems, items...)
+
+		// Check if there are more items to fetch
+		if len(items) == len(allItems) {
+			break // No more items to fetch
+		}
+		// Implement your logic for pagination or termination
+	}
+	return allItems
 }
