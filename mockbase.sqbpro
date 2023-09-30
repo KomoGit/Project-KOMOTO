@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/James/Desktop/Project-KOMOTO/mockbase.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="1"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1059"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="4,4:mainJobs"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Jobs" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_"><sort/><column_widths><column index="1" value="40"/><column index="2" value="169"/><column index="3" value="267"/><column index="4" value="163"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 1">-- Create a table to store job records
+CREATE TABLE Jobs (
+    ID INTEGER PRIMARY KEY AUTOINCREMENT,
+    Title TEXT,
+    Description TEXT,
+    Link TEXT
+);
+
+-- Insert 30 sample job records
+INSERT INTO Jobs (Title, Description, Link) VALUES
+    ('Software Engineer', 'Develop software applications.', 'https://example.com/job1'),
+    ('Data Analyst', 'Analyze data for insights.', 'https://example.com/job2'),
+    ('Web Developer', 'Create interactive web applications.', 'https://example.com/job3'),
+    ('Graphic Designer', 'Design visual content for marketing.', 'https://example.com/job4'),
+    ('Project Manager', 'Oversee project planning and execution.', 'https://example.com/job5'),
+    ('UX Designer', 'Improve user experiences for products.', 'https://example.com/job6'),
+    ('Content Writer', 'Write engaging content for websites.', 'https://example.com/job7'),
+    ('Marketing Specialist', 'Plan and execute marketing campaigns.', 'https://example.com/job8'),
+    ('Database Administrator', 'Manage and maintain databases.', 'https://example.com/job9'),
+    ('Network Engineer', 'Design and maintain network systems.', 'https://example.com/job10'),
+    ('Financial Analyst', 'Analyze financial data and trends.', 'https://example.com/job11'),
+    ('HR Manager', 'Manage human resources and personnel.', 'https://example.com/job12'),
+    ('Frontend Developer', 'Develop user interfaces for websites.', 'https://example.com/job13'),
+    ('Sales Representative', 'Promote and sell products or services.', 'https://example.com/job14'),
+    ('Customer Support Specialist', 'Assist customers with inquiries.', 'https://example.com/job15'),
+    ('Systems Administrator', 'Maintain computer systems and networks.', 'https://example.com/job16'),
+    ('Data Scientist', 'Analyze and interpret complex data.', 'https://example.com/job17'),
+    ('Accountant', 'Handle financial recordkeeping and reporting.', 'https://example.com/job18'),
+    ('Mechanical Engineer', 'Design and develop mechanical systems.', 'https://example.com/job19'),
+    ('Art Director', 'Lead creative visual projects.', 'https://example.com/job20'),
+    ('Legal Counsel', 'Provide legal advice and support.', 'https://example.com/job21'),
+    ('Quality Assurance Analyst', 'Ensure product quality and reliability.', 'https://example.com/job22'),
+    ('Product Manager', 'Manage product development and strategy.', 'https://example.com/job23'),
+    ('Teacher', 'Educate and inspire students.', 'https://example.com/job24'),
+    ('Nurse', 'Provide healthcare and patient care.', 'https://example.com/job25'),
+    ('Architect', 'Design and plan architectural projects.', 'https://example.com/job26'),
+    ('Chef', 'Prepare and cook culinary delights.', 'https://example.com/job27'),
+    ('Pharmacist', 'Dispense medications and healthcare advice.', 'https://example.com/job28'),
+    ('Electrician', 'Install and repair electrical systems.', 'https://example.com/job29'),
+    ('Civil Engineer', 'Plan and oversee civil construction projects.', 'https://example.com/job30');
+</sql><current_tab id="0"/></tab_sql></sqlb_project>
