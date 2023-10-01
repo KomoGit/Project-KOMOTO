@@ -8,5 +8,6 @@ namespace TestingApplication.Data
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
         public DbSet<Job> Jobs { get; set; }
+        public DbSet<Category> Categories { get; set; }
     }
 }

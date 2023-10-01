@@ -18,5 +18,12 @@ namespace TestingApplication.Controllers
             var items = _context.Jobs.ToList();
             return Ok(items);
         }
+        [HttpGet]
+        [Route("/api/software")]
+        public IActionResult GetDeveloperJobs()
+        {
+            var items = _context.Jobs.Where(j => j.CategoryId == 2).ToList();
+            return Ok(items);
+        }
     }
 }

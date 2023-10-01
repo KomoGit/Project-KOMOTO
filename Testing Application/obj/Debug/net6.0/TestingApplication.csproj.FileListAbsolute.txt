@@ -150,3 +150,7 @@ C:\Users\James\Desktop\Project-KOMOTO\Testing Application\obj\Debug\net6.0\refin
 C:\Users\James\Desktop\Project-KOMOTO\Testing Application\obj\Debug\net6.0\TestingApplication.pdb
 C:\Users\James\Desktop\Project-KOMOTO\Testing Application\obj\Debug\net6.0\TestingApplication.genruntimeconfig.cache
 C:\Users\James\Desktop\Project-KOMOTO\Testing Application\obj\Debug\net6.0\ref\TestingApplication.dll
+C:\Users\James\Desktop\Project-KOMOTO\Testing Application\bin\Debug\net6.0\Humanizer.dll
+C:\Users\James\Desktop\Project-KOMOTO\Testing Application\bin\Debug\net6.0\Microsoft.EntityFrameworkCore.Design.dll
+C:\Users\James\Desktop\Project-KOMOTO\Testing Application\bin\Debug\net6.0\Mono.TextTemplating.dll
+C:\Users\James\Desktop\Project-KOMOTO\Testing Application\bin\Debug\net6.0\System.CodeDom.dll
