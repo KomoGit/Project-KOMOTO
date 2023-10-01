@@ -2,12 +2,13 @@
 
 namespace TestingApplication.Model
 {
-    public class Job
+    public class Job:BaseModel
     {
-        [Key]
-        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Link { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
+        public Category JobCategory { get; set; }
     }
 }
