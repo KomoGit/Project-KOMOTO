@@ -14,6 +14,7 @@ import (
 
 var chatId int64 = GetChatId(os.Getenv("TELEGRAM_CHAT_ID"))
 var apiLink string = os.Getenv("API_LINK")
+var apiKey string = os.Getenv("API_KEY")
 
 const SLEEP_DURATION = time.Second * time.Duration(5)
 
@@ -71,28 +72,29 @@ func SendKeyboard(job Job) tgbotapi.InlineKeyboardMarkup {
 
 func GetJobs() []Job {
 	var allItems []Job
-	resp, err := http.Get(apiLink)
+	req, err := http.NewRequest("GET", apiLink, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	// Add the x-api-key header
+	req.Header.Set("x-api-key", apiKey)
+	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		log.Fatal(err)
 	}
 	defer resp.Body.Close()
-
 	// URL of the API endpoint
 	for {
-
 		var items []Job
-		if err := json.NewDecoder(resp.Body).Decode(&items); err != nil { //All 30 items in single sequence got added to items
+		if err := json.NewDecoder(resp.Body).Decode(&items); err != nil {
 			log.Fatal(err)
 		}
-
 		// Append items to the slice
 		allItems = append(allItems, items...)
-
 		// Check if there are more items to fetch
 		if len(items) == len(allItems) {
 			break // No more items to fetch
 		}
-		// Implement your logic for pagination or termination
 	}
 	return allItems
 }
