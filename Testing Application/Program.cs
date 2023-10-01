@@ -1,5 +1,6 @@
 
 using Microsoft.EntityFrameworkCore;
+using TestingApplication.Authentication;
 using TestingApplication.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ApiKeyAuthMiddleware>(); 
 
 app.UseAuthorization();
 
