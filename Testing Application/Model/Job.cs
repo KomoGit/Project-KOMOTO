@@ -9,6 +9,7 @@ namespace TestingApplication.Model
         public string Link { get; set; }
         [Required]
         public int CategoryId { get; set; }
+        [Required]
         public Category JobCategory { get; set; }
     }
 }
