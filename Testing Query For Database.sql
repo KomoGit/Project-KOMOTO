@@ -1,5 +1,10 @@
 USE KomoDb
 
+DROP DATABASE KomoDb
+
+DROP TABLE Jobs
+DROP TABLE __EFMigrationsHistory
+
 INSERT INTO Categories (Name) VALUES ('Sales and Marketing');
 INSERT INTO Categories (Name) VALUES ('IT and Software Development');
 INSERT INTO Categories (Name) VALUES ('Healthcare');
@@ -62,3 +67,24 @@ INSERT INTO Jobs (Title, Description, Link, CategoryId) VALUES
     ('Pharmacist', 'Dispense medications and healthcare advice.', 'https://example.com/job28', 3), -- Healthcare
     ('Electrician', 'Install and repair electrical systems.', 'https://example.com/job29', 10), -- Construction
     ('Civil Engineer', 'Plan and oversee civil construction projects.', 'https://example.com/job30', 5); -- Engineering
+
+INSERT INTO Jobs (Title, Description, Link, CategoryId, ExpirationDate, PublishDate) VALUES
+    ('Software Engineer 1', 'Develop software applications.', 'https://example.com/job1', 2, '2023-09-30', '2023-09-01'),  -- Software Development
+    ('Software Engineer 2', 'Develop software applications.', 'https://example.com/job2', 2, '2023-09-30', '2023-09-01'),  -- Software Development
+    ('Software Engineer 3', 'Develop software applications.', 'https://example.com/job3', 2, '2023-09-30', '2023-09-01'),  -- Software Development
+    ('Data Analyst', 'Analyze data for insights.', 'https://example.com/job4', 7, '2023-10-15', '2023-08-15'),          -- Data Analysis
+    ('Web Developer', 'Create interactive web applications.', 'https://example.com/job5', 2, '2023-09-28', '2023-08-10'), -- Software Development
+    ('Frontend Developer', 'Develop user interfaces for websites.', 'https://example.com/job6', 2, '2023-10-05', '2023-09-01'), -- Software Development
+    ('Full Stack Developer', 'Develop web applications end-to-end.', 'https://example.com/job7', 2, '2023-09-30', '2023-09-01'), -- Software Development
+    ('Mobile App Developer', 'Create mobile applications.', 'https://example.com/job8', 2, '2023-10-10', '2023-09-01'), -- Software Development
+    ('Backend Developer', 'Develop server-side applications.', 'https://example.com/job9', 2, '2023-09-30', '2023-09-01'), -- Software Development
+    ('UI/UX Designer', 'Design user interfaces for software.', 'https://example.com/job10', 13, '2023-09-25', '2023-08-20'), -- Art and Design
+    ('Database Administrator', 'Manage and maintain databases.', 'https://example.com/job11', 2, '2023-10-15', '2023-09-01'), -- Software Development
+    ('Network Engineer', 'Design and maintain network systems.', 'https://example.com/job12', 2, '2023-09-30', '2023-09-01'), -- Software Development
+    ('QA Engineer', 'Test software for quality.', 'https://example.com/job13', 2, '2023-10-05', '2023-08-30'), -- Software Development
+    ('DevOps Engineer', 'Manage software deployment and infrastructure.', 'https://example.com/job14', 2, '2023-10-10', '2023-09-01'), -- Software Development
+    ('Machine Learning Engineer', 'Develop machine learning models.', 'https://example.com/job15', 2, '2023-09-28', '2023-08-15'); -- Software Development
+
+USE master;
+ALTER DATABASE [KomoDb] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+DROP DATABASE [KomoDb] ;
