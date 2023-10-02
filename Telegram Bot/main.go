@@ -12,28 +12,37 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-var chatId int64 = GetChatId(os.Getenv("TELEGRAM_CHAT_ID"))
-var apiLink string = os.Getenv("API_LINK")
-var apiKey string = os.Getenv("API_KEY")
+var (
+	chatId  int64  = GetChatId(os.Getenv("CHAT_ID")) //Converts to int64
+	apiLink string = os.Getenv("API_LINK")
+	apiKey  string = os.Getenv("API_KEY")
+)
 
-const SLEEP_DURATION = time.Second * time.Duration(5)
+const SLEEP_DURATION = time.Second * time.Duration(5) //5 Seconds
+
+type Category struct {
+	Name string `json:"name"`
+	ID   int    `json:"id"`
+}
 
 type Job struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Link        string `json:"link"`
+	Title       string   `json:"title"`
+	Description string   `json:"description"`
+	Link        string   `json:"link"`
+	CategoryID  int      `json:"categoryId"`
+	ID          int      `json:"id"`
+	Cat         Category `json:"jobCategory"`
 }
 
 func main() {
-
 	for _, item := range GetJobs() {
 		BotController(item)
 		time.Sleep(SLEEP_DURATION)
 	}
 }
 
-func BotController(sampleJob Job) {
-	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_APITOKEN"))
+func BotController(job Job) {
+	bot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
@@ -43,8 +52,8 @@ func BotController(sampleJob Job) {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	msg := tgbotapi.NewMessage(chatId, SendJob(sampleJob))
-	msg.ReplyMarkup = SendKeyboard(sampleJob)
+	msg := tgbotapi.NewMessage(chatId, SendJob(job))
+	msg.ReplyMarkup = SendKeyboard(job)
 	// Send the message.
 	if _, err = bot.Send(msg); err != nil {
 		panic(err)
@@ -59,9 +68,10 @@ func GetChatId(str string) int64 {
 }
 
 func SendJob(job Job) string {
-	return fmt.Sprintf("%s \n%s", job.Title, job.Description)
+	return fmt.Sprintf("%s \n%s\n%s", job.Title, job.Description, job.Cat.Name)
 }
 
+// Save link will probably be a constant
 func SendKeyboard(job Job) tgbotapi.InlineKeyboardMarkup {
 	return tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
