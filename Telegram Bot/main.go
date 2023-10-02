@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -26,18 +27,24 @@ type Category struct {
 }
 
 type Job struct {
+	ID          int      `json:"id"`
 	Title       string   `json:"title"`
 	Description string   `json:"description"`
 	Link        string   `json:"link"`
+	ExpDate     string   `json:"expirationDate"`
 	CategoryID  int      `json:"categoryId"`
-	ID          int      `json:"id"`
 	Cat         Category `json:"jobCategory"`
 }
 
 func main() {
-	for _, item := range GetJobs() {
+	//Burst of 5
+	for i, item := range GetJobs() {
+		if i == 5 {
+			time.Sleep(SLEEP_DURATION)
+			i = 0
+		}
 		BotController(item)
-		time.Sleep(SLEEP_DURATION)
+		i++
 	}
 }
 
@@ -47,7 +54,7 @@ func BotController(job Job) {
 		log.Panic(err)
 	}
 
-	bot.Debug = true
+	bot.Debug = getEnvBool()
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
@@ -67,8 +74,12 @@ func GetChatId(str string) int64 {
 	return 0
 }
 
+func getEnvBool() bool {
+	return strings.ToLower(os.Getenv("DEBUG_MODE")) == "true"
+}
+
 func SendJob(job Job) string {
-	return fmt.Sprintf("%s \n%s\n%s", job.Title, job.Description, job.Cat.Name)
+	return fmt.Sprintf("Title: %s \nDescription: %s\nCategory: %s\nExpiration Date: %s", job.Title, job.Description, job.Cat.Name, strings.Split(job.ExpDate, "T")[0])
 }
 
 // Save link will probably be a constant
