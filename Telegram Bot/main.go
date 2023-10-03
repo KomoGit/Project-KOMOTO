@@ -25,7 +25,10 @@ type Category struct {
 	Name string `json:"name"`
 	ID   int    `json:"id"`
 }
-
+type Company struct {
+	Name     string `json:"name"`
+	Industry string `json:"industry"`
+}
 type Job struct {
 	ID          int      `json:"id"`
 	Title       string   `json:"title"`
@@ -34,6 +37,8 @@ type Job struct {
 	ExpDate     string   `json:"expirationDate"`
 	CategoryID  int      `json:"categoryId"`
 	Cat         Category `json:"jobCategory"`
+	CompanyID   int      `json:"employerId"`
+	Employer    Company  `json:"employer"`
 }
 
 func main() {
@@ -41,6 +46,7 @@ func main() {
 	for i, item := range GetJobs() {
 		if i == 5 {
 			time.Sleep(SLEEP_DURATION)
+			fmt.Printf("Burst of %d is done", i)
 			i = 0
 		}
 		BotController(item)
@@ -55,7 +61,6 @@ func BotController(job Job) {
 	}
 
 	bot.Debug = getEnvBool()
-	log.Printf("Authorized on account %s", bot.Self.UserName)
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
@@ -79,7 +84,7 @@ func getEnvBool() bool {
 }
 
 func SendJob(job Job) string {
-	return fmt.Sprintf("Title: %s \nDescription: %s\nCategory: %s\nExpiration Date: %s", job.Title, job.Description, job.Cat.Name, strings.Split(job.ExpDate, "T")[0])
+	return fmt.Sprintf("Title: %s\nDescription: %s\nCompany: %s\nCategory: %s\nExpiration Date: %s", job.Title, job.Description, job.Employer.Name, job.Cat.Name, strings.Split(job.ExpDate, "T")[0])
 }
 
 // Save link will probably be a constant
