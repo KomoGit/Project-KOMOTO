@@ -20,7 +20,7 @@
                 await context.Response.WriteAsync("API Key missing.");
                 return;
             }
-            var apiKey = _configuration.GetValue<string>(AuthConstants.ApiSectionName);
+            string? apiKey = _configuration.GetValue<string>(AuthConstants.ApiSectionName);
             if (!apiKey.Equals(extractedKey)) 
             {
                 context.Response.StatusCode = 401;

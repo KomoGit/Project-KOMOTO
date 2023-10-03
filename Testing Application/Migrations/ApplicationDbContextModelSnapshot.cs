@@ -40,6 +40,24 @@ namespace TestingApplication.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("TestingApplication.Model.Company", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Companies");
+                });
+
             modelBuilder.Entity("TestingApplication.Model.Job", b =>
                 {
                     b.Property<int>("Id")
@@ -55,6 +73,9 @@ namespace TestingApplication.Migrations
                         .IsRequired()
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
+
+                    b.Property<int>("EmployerId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
@@ -76,6 +97,8 @@ namespace TestingApplication.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("EmployerId");
+
                     b.ToTable("Jobs");
                 });
 
@@ -86,6 +109,14 @@ namespace TestingApplication.Migrations
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("TestingApplication.Model.Company", "Employer")
+                        .WithMany()
+                        .HasForeignKey("EmployerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employer");
 
                     b.Navigation("JobCategory");
                 });
