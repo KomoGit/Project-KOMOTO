@@ -13,14 +13,16 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+// Constants and environment variables
 var (
 	chatId  int64  = GetChatId(os.Getenv("CHAT_ID")) //Converts to int64
 	apiLink string = os.Getenv("API_LINK")
 	apiKey  string = os.Getenv("API_KEY")
 )
 
-const SLEEP_DURATION = time.Second * time.Duration(5) //5 Seconds
+const SLEEP_DURATION = time.Second * time.Duration(10) //10 Seconds
 
+// Data binding
 type Category struct {
 	Name string `json:"name"`
 	ID   int    `json:"id"`
@@ -43,10 +45,11 @@ type Job struct {
 
 func main() {
 	//Burst of 5
-	for i, item := range GetJobs() {
-		if i == 5 {
+	i := 0
+	for _, item := range GetJobs() {
+		if i == 4 {
 			time.Sleep(SLEEP_DURATION)
-			fmt.Printf("Burst of %d is done", i)
+			fmt.Printf("Burst of %d is done\n", i)
 			i = 0
 		}
 		BotController(item)
@@ -72,6 +75,7 @@ func BotController(job Job) {
 	}
 }
 
+// Parsers
 func GetChatId(str string) int64 {
 	if n, err := strconv.ParseInt(str, 10, 64); err == nil {
 		return n
@@ -83,19 +87,20 @@ func getEnvBool() bool {
 	return strings.ToLower(os.Getenv("DEBUG_MODE")) == "true"
 }
 
+// Send Data
 func SendJob(job Job) string {
 	return fmt.Sprintf("Title: %s\nDescription: %s\nCompany: %s\nCategory: %s\nExpiration Date: %s", job.Title, job.Description, job.Employer.Name, job.Cat.Name, strings.Split(job.ExpDate, "T")[0])
 }
 
-// Save link will probably be a constant
 func SendKeyboard(job Job) tgbotapi.InlineKeyboardMarkup {
 	return tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonURL("Auto Apply \U00002705", job.Link),
-			tgbotapi.NewInlineKeyboardButtonURL("Save \U0001F4BE", "www.example.com"),
+			tgbotapi.NewInlineKeyboardButtonURL("Save \U0001F4BE", "www.example.com"), // Save link will probably be a constant
 		))
 }
 
+// Retireve Data
 func GetJobs() []Job {
 	var allItems []Job
 	req, err := http.NewRequest("GET", apiLink, nil)
