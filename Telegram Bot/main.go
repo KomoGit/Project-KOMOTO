@@ -6,45 +6,13 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-// Constants and environment variables
-var (
-	chatId  int64  = GetChatId(os.Getenv("CHAT_ID")) //Converts to int64
-	apiLink string = os.Getenv("API_LINK")
-	apiKey  string = os.Getenv("API_KEY")
-)
-
-const SLEEP_DURATION = time.Second * time.Duration(10) //10 Seconds
-
-// Data binding
-type Category struct {
-	Name string `json:"name"`
-	ID   int    `json:"id"`
-}
-type Company struct {
-	Name     string `json:"name"`
-	Industry string `json:"industry"`
-}
-type Job struct {
-	ID          int      `json:"id"`
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	Link        string   `json:"link"`
-	ExpDate     string   `json:"expirationDate"`
-	CategoryID  int      `json:"categoryId"`
-	Cat         Category `json:"jobCategory"`
-	CompanyID   int      `json:"employerId"`
-	Employer    Company  `json:"employer"`
-}
-
 func main() {
-	//Burst of 5
 	i := 0
 	for _, item := range GetJobs() {
 		if i == 4 {
@@ -52,7 +20,7 @@ func main() {
 			fmt.Printf("Burst of %d is done\n", i)
 			i = 0
 		}
-		BotController(item)
+		BotController(item) // Running these with goroutine
 		i++
 	}
 }
@@ -67,24 +35,12 @@ func BotController(job Job) {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	msg := tgbotapi.NewMessage(chatId, SendJob(job))
+	msg := tgbotapi.NewMessage(chatId, SendJob(job)) //chatId can be split as well. Each running its own.
 	msg.ReplyMarkup = SendKeyboard(job)
 	// Send the message.
 	if _, err = bot.Send(msg); err != nil {
 		panic(err)
 	}
-}
-
-// Parsers
-func GetChatId(str string) int64 {
-	if n, err := strconv.ParseInt(str, 10, 64); err == nil {
-		return n
-	}
-	return 0
-}
-
-func getEnvBool() bool {
-	return strings.ToLower(os.Getenv("DEBUG_MODE")) == "true"
 }
 
 // Send Data
@@ -103,7 +59,7 @@ func SendKeyboard(job Job) tgbotapi.InlineKeyboardMarkup {
 // Retireve Data
 func GetJobs() []Job {
 	var allItems []Job
-	req, err := http.NewRequest("GET", apiLink, nil)
+	req, err := http.NewRequest("GET", apiLink, nil) //Link should be converted
 	if err != nil {
 		log.Fatal(err)
 	}
