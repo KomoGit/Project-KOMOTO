@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using TestingApplication.Model;
 
 namespace TestingApplication.Auto_Mapper
 {
@@ -7,7 +6,7 @@ namespace TestingApplication.Auto_Mapper
     {
         public MapperProfile()
         {
-            CreateMap<Job,Category>();
+
         }
     }
 }

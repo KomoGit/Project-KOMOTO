@@ -6,44 +6,21 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"strconv"
 	"strings"
 	"time"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-var (
-	chatId  int64  = GetChatId(os.Getenv("CHAT_ID")) //Converts to int64
-	apiLink string = os.Getenv("API_LINK")
-	apiKey  string = os.Getenv("API_KEY")
-)
-
-const SLEEP_DURATION = time.Second * time.Duration(5) //5 Seconds
-
-type Category struct {
-	Name string `json:"name"`
-	ID   int    `json:"id"`
-}
-
-type Job struct {
-	ID          int      `json:"id"`
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	Link        string   `json:"link"`
-	ExpDate     string   `json:"expirationDate"`
-	CategoryID  int      `json:"categoryId"`
-	Cat         Category `json:"jobCategory"`
-}
-
 func main() {
-	//Burst of 5
-	for i, item := range GetJobs() {
-		if i == 5 {
+	i := 0
+	for _, item := range GetJobs() {
+		if i == 4 {
 			time.Sleep(SLEEP_DURATION)
+			fmt.Printf("Burst of %d is done\n", i)
 			i = 0
 		}
-		BotController(item)
+		BotController(item) // Running these with goroutine
 		i++
 	}
 }
@@ -55,11 +32,10 @@ func BotController(job Job) {
 	}
 
 	bot.Debug = getEnvBool()
-	log.Printf("Authorized on account %s", bot.Self.UserName)
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	msg := tgbotapi.NewMessage(chatId, SendJob(job))
+	msg := tgbotapi.NewMessage(chatId, SendJob(job)) //chatId can be split as well. Each running its own.
 	msg.ReplyMarkup = SendKeyboard(job)
 	// Send the message.
 	if _, err = bot.Send(msg); err != nil {
@@ -67,33 +43,23 @@ func BotController(job Job) {
 	}
 }
 
-func GetChatId(str string) int64 {
-	if n, err := strconv.ParseInt(str, 10, 64); err == nil {
-		return n
-	}
-	return 0
-}
-
-func getEnvBool() bool {
-	return strings.ToLower(os.Getenv("DEBUG_MODE")) == "true"
-}
-
+// Send Data
 func SendJob(job Job) string {
-	return fmt.Sprintf("Title: %s \nDescription: %s\nCategory: %s\nExpiration Date: %s", job.Title, job.Description, job.Cat.Name, strings.Split(job.ExpDate, "T")[0])
+	return fmt.Sprintf("Title: %s\nDescription: %s\nCompany: %s\nCategory: %s\nExpiration Date: %s", job.Title, job.Description, job.Employer.Name, job.Cat.Name, strings.Split(job.ExpDate, "T")[0])
 }
 
-// Save link will probably be a constant
 func SendKeyboard(job Job) tgbotapi.InlineKeyboardMarkup {
 	return tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonURL("Auto Apply \U00002705", job.Link),
-			tgbotapi.NewInlineKeyboardButtonURL("Save \U0001F4BE", "www.example.com"),
+			tgbotapi.NewInlineKeyboardButtonURL("Save \U0001F4BE", "www.example.com"), // Save link will probably be a constant
 		))
 }
 
+// Retireve Data
 func GetJobs() []Job {
 	var allItems []Job
-	req, err := http.NewRequest("GET", apiLink, nil)
+	req, err := http.NewRequest("GET", apiLink, nil) //Link should be converted
 	if err != nil {
 		log.Fatal(err)
 	}
