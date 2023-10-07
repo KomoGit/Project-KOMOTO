@@ -37,7 +37,7 @@ namespace TestingApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories");
+                    b.ToTable("Categories", (string)null);
                 });
 
             modelBuilder.Entity("TestingApplication.Model.Company", b =>
@@ -55,7 +55,7 @@ namespace TestingApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies");
+                    b.ToTable("Companies", (string)null);
                 });
 
             modelBuilder.Entity("TestingApplication.Model.Job", b =>
@@ -99,7 +99,25 @@ namespace TestingApplication.Migrations
 
                     b.HasIndex("EmployerId");
 
-                    b.ToTable("Jobs");
+                    b.ToTable("Jobs", (string)null);
+                });
+
+            modelBuilder.Entity("TestingApplication.Model.Tools", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tools", (string)null);
                 });
 
             modelBuilder.Entity("TestingApplication.Model.Job", b =>

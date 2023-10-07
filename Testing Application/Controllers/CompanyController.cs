@@ -24,14 +24,24 @@ namespace TestingApplication.Controllers
                 {
                     CompanyId = c.Id,
                     CompanyName = c.Name,
+                    //Active Jobs
                     CurrentJobs = _context.Jobs
-                        .Where(j => j.EmployerId == c.Id)
+                        .Where(j => j.EmployerId == c.Id && j.ExpirationDate >= DateTime.Today)
                         .Select(j => new
                         {
                             JobId = j.Id,
                             JobTitle = j.Title,
                         })
-                        .ToList()
+                        .ToList(),
+                        //Archived Jobs - Date Expired
+                        ArchivedJobs = _context.Jobs
+                        .Where(j => j.EmployerId == c.Id && j.ExpirationDate < DateTime.Today)
+                        .Select(j => new
+                        {
+                            JobId = j.Id,
+                            JobTitle = j.Title,
+                        })
+                        .ToList(),
                 })
                 .ToList()
                 .Select(c => new CompanyDTO
@@ -39,6 +49,13 @@ namespace TestingApplication.Controllers
                     CompanyId = c.CompanyId,
                     CompanyName = c.CompanyName,
                     CurrentJobs = c.CurrentJobs
+                        .Select(j => new JobDTO
+                        {
+                            JobId = j.JobId,
+                            JobTitle = j.JobTitle,
+                        })
+                        .ToList(),
+                    ArchivedJobs = c.ArchivedJobs
                         .Select(j => new JobDTO
                         {
                             JobId = j.JobId,

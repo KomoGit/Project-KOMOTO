@@ -1,4 +1,6 @@
-﻿namespace TestingApplication.Data_Transfer_Objects
+﻿using TestingApplication.Model;
+
+namespace TestingApplication.Data_Transfer_Objects
 {
     public class JobDTO
     {

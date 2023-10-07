@@ -55,5 +55,16 @@ namespace TestingApplication.Controllers
                 .ToList();
             return Ok(items);
         }
+        [HttpGet]
+        [Route("/api/archive")]
+        public IActionResult GetArchivedJobs()
+        {
+            List<Job>? items = _context.Jobs
+                .Include("JobCategory")
+                .Include("Employer")
+                .Where(j => j.ExpirationDate < DateTime.Today)
+                .ToList();
+            return Ok(items);
+        }
     }
 }
