@@ -8,7 +8,5 @@ namespace TestingApplication.Model
         [Required]
         [MaxLength(100,ErrorMessage = "Cannot exceed 100")]
         public string Name { get; set; }
-        [NotMapped]
-        public List<Job>? ActiveJobs { get; set; }
     }
 }
