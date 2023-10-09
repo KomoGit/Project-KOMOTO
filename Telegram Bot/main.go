@@ -92,6 +92,9 @@ func BotController(c chan string, conf BotConfig) {
 
 // Send Data
 func SendJob(job Job) string {
+	if job.Cat == (Category{}) {
+		return fmt.Sprintf("Title: %s\nDescription: %s\nCompany: %s\nExpiration Date: %s", job.Title, job.Description, job.Employer.Name, strings.Split(job.ExpDate, "T")[0])
+	}
 	return fmt.Sprintf("Title: %s\nDescription: %s\nCompany: %s\nCategory: %s\nExpiration Date: %s", job.Title, job.Description, job.Employer.Name, job.Cat.Name, strings.Split(job.ExpDate, "T")[0])
 }
 
