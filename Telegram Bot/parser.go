@@ -17,7 +17,7 @@ func SplitData(link string) []string {
 	return strings.Split(link, " ")
 }
 
-func getEnvBool() bool {
+func GetEnvBool() bool {
 	return strings.ToLower(os.Getenv("DEBUG_MODE")) == "true"
 }
 

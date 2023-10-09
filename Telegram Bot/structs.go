@@ -21,8 +21,3 @@ type Job struct {
 	Cat         Category `json:"jobCategory"`
 	Employer    Company  `json:"employer"`
 }
-
-type BotConfig struct {
-	api_link string
-	chat_id  int64
-}

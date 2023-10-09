@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace TestingApplication.Model
 {
@@ -18,6 +17,26 @@ namespace TestingApplication.Model
         public int EmployerId { get; set; }
         public Company? Employer { get; set; }
         #endregion
+
+        #region Detailed Data
+        //How many people will be hired.
+        public int NumberOfHires { get; set; } = 1;
+        public bool ShowNumberOfHires { get; set; } = false;
+        public int NumberOfViews { get; set; }
+        public bool ShowNumberOfViews { get; set; } = true;
+        #endregion
+
+        #region Requirments
+        public int MinimumExperienceInYears { get; set; } = 0;
+        public int MinimumAgeRequirement { get; set; } = 18;
+        public int MaximumAgeRequirement { get; set; } = 64;
+        public bool WomenNeedNotApply { get; set; } = false;
+        public bool MenNeedNotApply { get; set; } = false;
+        //Tools
+        //Languages
+        //Certifiactes
+        #endregion
+
         #region Metadata
         [Required]
         public int CategoryId { get; set; }

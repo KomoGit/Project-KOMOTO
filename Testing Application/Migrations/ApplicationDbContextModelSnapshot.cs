@@ -37,7 +37,7 @@ namespace TestingApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("TestingApplication.Model.Company", b =>
@@ -48,6 +48,11 @@ namespace TestingApplication.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -55,7 +60,7 @@ namespace TestingApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Companies", (string)null);
+                    b.ToTable("Companies");
                 });
 
             modelBuilder.Entity("TestingApplication.Model.Job", b =>
@@ -85,13 +90,40 @@ namespace TestingApplication.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
+                    b.Property<int>("MaximumAgeRequirement")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("MenNeedNotApply")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("MinimumAgeRequirement")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinimumExperienceInYears")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfHires")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfViews")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("PublishDate")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("ShowNumberOfHires")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("ShowNumberOfViews")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("WomenNeedNotApply")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -99,10 +131,10 @@ namespace TestingApplication.Migrations
 
                     b.HasIndex("EmployerId");
 
-                    b.ToTable("Jobs", (string)null);
+                    b.ToTable("Jobs");
                 });
 
-            modelBuilder.Entity("TestingApplication.Model.Tools", b =>
+            modelBuilder.Entity("TestingApplication.Model.Tool", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -117,7 +149,7 @@ namespace TestingApplication.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Tools", (string)null);
+                    b.ToTable("Tools");
                 });
 
             modelBuilder.Entity("TestingApplication.Model.Job", b =>

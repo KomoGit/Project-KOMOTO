@@ -1,2 +1,5 @@
-/.vs
+/.vs/
 /Migrations
+/Migration/.vs/
+/bin/
+/obj/

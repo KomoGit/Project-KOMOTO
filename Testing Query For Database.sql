@@ -129,8 +129,11 @@ INSERT INTO Companies (Name) VALUES
 ('Frontier Software'),
 ('Pinnacle Innovations');
 
-use KomoDb
+USE KomoDb
 SELECT * FROM Jobs WHERE CategoryId = 2
+
+USE KomoDb
+ALTER TABLE [Tools] DROP COLUMN JobId
 
 USE master;
 ALTER DATABASE [KomoDb] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;

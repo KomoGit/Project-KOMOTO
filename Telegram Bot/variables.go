@@ -11,4 +11,9 @@ var (
 	apiKey  string = os.Getenv("API_KEY")
 )
 
+var (
+	links = SplitData(apiLink)
+	ids   = SplitData(chatId)
+)
+
 const SLEEP_DURATION = time.Second * time.Duration(1) //10 Seconds

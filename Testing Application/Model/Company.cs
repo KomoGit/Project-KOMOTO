@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TestingApplication.Model
 {
@@ -8,5 +7,8 @@ namespace TestingApplication.Model
         [Required]
         [MaxLength(100,ErrorMessage = "Cannot exceed 100")]
         public string Name { get; set; }
+        [Required]
+        [MaxLength(300, ErrorMessage = "Cannot exceed 300")]
+        public string Description { get; set; }
     }
 }
