@@ -13,11 +13,14 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-var links = SplitData(apiLink)
-var ids = SplitData(chatId)
+type BotConfig struct {
+	api_link string
+	chat_id  int64
+}
 
 func main() {
-	ch := make(chan string, 2)
+	Startup()
+	ch := make(chan string, 3)
 	var wg sync.WaitGroup
 
 	for i := 0; i < len(links); i++ {
@@ -45,27 +48,21 @@ func main() {
 		fmt.Println(msg)
 	}
 }
-
-func BotController(c chan string, conf BotConfig) {
-	i := 0
-	for _, item := range GetJobs(conf.api_link) {
-		if i == 4 {
-			time.Sleep(SLEEP_DURATION)
-			i = 0
-		}
-		Bot(conf.chat_id, item)
-		i++
+func Startup() {
+	if apiKey == "" {
+		panic("API Key is empty. Bot cannot access without this! Shutting Down.")
 	}
-	c <- "Bot is done."
+	if len(links) > 3 || len(ids) > 3 {
+		panic("Links or (and) ids cannot be more than 3! Shutting down.")
+	}
 }
-
 func Bot(chatId int64, job Job) {
 	bot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
 	if err != nil {
 		log.Panic(err)
 	}
 
-	bot.Debug = getEnvBool()
+	bot.Debug = GetEnvBool()
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
@@ -78,6 +75,19 @@ func Bot(chatId int64, job Job) {
 	if _, err = bot.Send(msg); err != nil {
 		panic(err)
 	}
+}
+
+func BotController(c chan string, conf BotConfig) {
+	i := 0
+	for _, item := range GetJobs(conf.api_link) {
+		if i == 4 {
+			time.Sleep(SLEEP_DURATION)
+			i = 0
+		}
+		Bot(conf.chat_id, item)
+		i++
+	}
+	c <- "Bot is done."
 }
 
 // Send Data
