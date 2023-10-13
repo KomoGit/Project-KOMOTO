@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using TestingApplication.Enums;
 
 namespace TestingApplication.Model
 {
@@ -20,10 +22,12 @@ namespace TestingApplication.Model
 
         #region Detailed Data
         //How many people will be hired.
-        public int NumberOfHires { get; set; } = 1;
         public bool ShowNumberOfHires { get; set; } = false;
-        public int NumberOfViews { get; set; }
         public bool ShowNumberOfViews { get; set; } = true;
+        public int NumberOfHires { get; set; } = 1;
+        public int NumberOfViews { get; set; }
+        public EmploymentType EmploymentType { get; set; } = EmploymentType.FULLTIME;
+        public LocationType LocationType { get; set; } = LocationType.OFFICE;
         #endregion
 
         #region Requirments

@@ -82,6 +82,9 @@ namespace TestingApplication.Migrations
                     b.Property<int>("EmployerId")
                         .HasColumnType("int");
 
+                    b.Property<int>("EmploymentType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("ExpirationDate")
                         .HasColumnType("datetime2");
 
@@ -89,6 +92,9 @@ namespace TestingApplication.Migrations
                         .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<int>("LocationType")
+                        .HasColumnType("int");
 
                     b.Property<int>("MaximumAgeRequirement")
                         .HasColumnType("int");
