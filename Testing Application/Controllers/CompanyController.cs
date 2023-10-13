@@ -19,7 +19,7 @@ namespace TestingApplication.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var data = _context.Companies
+            List<CompanyDTO>? data = _context.Companies
                 .Select(c => new
                 {
                     CompanyId = c.Id,
@@ -51,15 +51,15 @@ namespace TestingApplication.Controllers
                     CurrentJobs = c.CurrentJobs
                         .Select(j => new JobDTO
                         {
-                            JobId = j.JobId,
-                            JobTitle = j.JobTitle,
+                            Id = j.JobId,
+                            Title = j.JobTitle,
                         })
                         .ToList(),
                     ArchivedJobs = c.ArchivedJobs
                         .Select(j => new JobDTO
                         {
-                            JobId = j.JobId,
-                            JobTitle = j.JobTitle,
+                            Id = j.JobId,
+                            Title = j.JobTitle,
                         })
                         .ToList()
                 })
