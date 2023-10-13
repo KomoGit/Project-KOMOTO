@@ -56,6 +56,8 @@ func Startup() {
 		panic("Links or (and) ids cannot be more than 3! Shutting down.")
 	}
 }
+
+// Need to make sure bot side confirmation exists
 func Bot(chatId int64, job Job) {
 	bot, err := tgbotapi.NewBotAPI(os.Getenv("BOT_TOKEN"))
 	if err != nil {
@@ -67,6 +69,7 @@ func Bot(chatId int64, job Job) {
 	u.Timeout = 60
 
 	msg := tgbotapi.NewMessage(chatId, SendJob(job))
+	//Causes crash. Fix it
 	msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonURL("Auto Apply \U00002705", job.Link),
