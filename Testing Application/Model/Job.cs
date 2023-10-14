@@ -37,8 +37,19 @@ namespace TestingApplication.Model
         public bool WomenNeedNotApply { get; set; } = false;
         public bool MenNeedNotApply { get; set; } = false;
         //Tools
+        //Must have, if they do know these tools, they are excluded immediately.
+        [Required]
+        public string RequiredTools { get; set; }
+        //Optional, whether the applicants know it or not doesn't matter much.
+        public string? AdditionalTools { get; set; }
+
         //Languages
+        //Many-To-Many?
+
         //Certifiactes
+        [Required]
+        public string RequiredCertificates { get; set; } //Same as Tools
+        public string? AdditionalCertificates { get; set; }
         #endregion
 
         #region Metadata
