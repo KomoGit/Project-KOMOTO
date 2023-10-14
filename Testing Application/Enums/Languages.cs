@@ -2,10 +2,10 @@
 {
     public enum Languages
     {
-        AzerbaijaniTurkish = 1,
-        English = 2,
-        Turkish = 3,
-        German = 4,
-        Russian = 5,      
+        AZERBAIJANI = 1,
+        ENGLISH = 2,
+        TURKISH = 3,
+        GERMAN = 4,
+        RUSSIAN = 5,      
     }
 }
