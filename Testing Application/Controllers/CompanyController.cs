@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TestingApplication.Data;
 using TestingApplication.Data_Transfer_Objects;
 
-namespace TestingApplication.Controllers
+namespace TestingApplication.Controllers.V1
 {
     [Route("/api/company")]
     [ApiController]
@@ -33,8 +33,8 @@ namespace TestingApplication.Controllers
                             JobTitle = j.Title,
                         })
                         .ToList(),
-                        //Archived Jobs - Date Expired
-                        ArchivedJobs = _context.Jobs
+                    //Archived Jobs - Date Expired
+                    ArchivedJobs = _context.Jobs
                         .Where(j => j.EmployerId == c.Id && j.ExpirationDate < DateTime.Today)
                         .Select(j => new
                         {
