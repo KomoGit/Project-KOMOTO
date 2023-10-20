@@ -18,7 +18,7 @@ namespace TestingApplication.Data_Transfer_Objects
         [Required]
         [MaxLength(200, ErrorMessage = "Cannot exceed 200")]
         public string Link { get; set; }
-        public int EmployerId { get; set; }
+        //public int EmployerId { get; set; }
         public Company? Employer { get; set; }
         #endregion
 
