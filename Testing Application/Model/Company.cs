@@ -10,5 +10,6 @@ namespace TestingApplication.Model
         [Required]
         [MaxLength(300, ErrorMessage = "Cannot exceed 300")]
         public string Description { get; set; }
+        public string CompanyLogoLink { get; set; }
     }
 }

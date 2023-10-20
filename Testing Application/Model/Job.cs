@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
 using TestingApplication.Enums;
 
 namespace TestingApplication.Model
@@ -26,8 +25,12 @@ namespace TestingApplication.Model
         public bool ShowNumberOfViews { get; set; } = true;
         public int NumberOfHires { get; set; } = 1;
         public int NumberOfViews { get; set; }
+        public float MaxSalary { get; set; } = 0;
+        public float MinSalary { get; set; } = 0;
+        public bool DeterminedAtInterview { get; set; } = false;
         public EmploymentType EmploymentType { get; set; } = EmploymentType.FULLTIME;
         public LocationType LocationType { get; set; } = LocationType.OFFICE;
+        public JobLevels SeniorityLevel { get; set; } = JobLevels.Junior;
         #endregion
 
         #region Requirments
@@ -56,6 +59,7 @@ namespace TestingApplication.Model
         [Required]
         public int CategoryId { get; set; }
         public Category? JobCategory { get; set; }
+
         [Required]
         public DateTime ExpirationDate { get; set; } = DateTime.Now.AddDays(1);
         public DateTime PublishDate { get; set; } = DateTime.Now;
