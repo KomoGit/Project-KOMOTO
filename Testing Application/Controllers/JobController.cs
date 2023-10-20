@@ -6,7 +6,7 @@ using TestingApplication.Data;
 using TestingApplication.Data_Transfer_Objects;
 using TestingApplication.Model;
 
-namespace TestingApplication.Controllers.V1
+namespace TestingApplication.Controllers
 {
     [Route("api/jobs")]
     [ApiController]
@@ -57,7 +57,7 @@ namespace TestingApplication.Controllers.V1
             return Ok(items);
         }
         [HttpGet]
-        [Route("/api/categoryid")]
+        [Route("categoryid")]
         //Not including ("JobCategory") because the channel names are the categories.
         public IActionResult GetJobsByCategory(int id = 1)
         {
@@ -69,7 +69,7 @@ namespace TestingApplication.Controllers.V1
         }
 
         [HttpGet]
-        [Route("/api/companyid")]
+        [Route("companyid")]
         public IActionResult GetJobsByCompany(int id)
         {
             if (id == 0)
@@ -112,7 +112,7 @@ namespace TestingApplication.Controllers.V1
         }
 
         [HttpGet]
-        [Route("/api/companyandcategory")]
+        [Route("companyandcategory")]
         public IActionResult GetJobsByCompanyAndCategory(int id, int categoryId)
         {
             if (id == 0)
@@ -158,7 +158,7 @@ namespace TestingApplication.Controllers.V1
         }
 
         [HttpGet]
-        [Route("/api/archive")]
+        [Route("archive")]
         public IActionResult GetArchivedJobs()
         {
             List<JobDTO>? items = _context.Jobs

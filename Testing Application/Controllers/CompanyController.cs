@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using TestingApplication.Authentication;
 using TestingApplication.Data;
 using TestingApplication.Data_Transfer_Objects;
 
-namespace TestingApplication.Controllers.V1
+namespace TestingApplication.Controllers
 {
     [Route("/api/company")]
     [ApiController]
@@ -17,6 +18,7 @@ namespace TestingApplication.Controllers.V1
             _mapper = mapper;
         }
         [HttpGet]
+        [Route("detailed")]
         public IActionResult Index()
         {
             List<CompanyDTO>? data = _context.Companies
@@ -24,7 +26,6 @@ namespace TestingApplication.Controllers.V1
                 {
                     CompanyId = c.Id,
                     CompanyName = c.Name,
-                    //Active Jobs
                     CurrentJobs = _context.Jobs
                         .Where(j => j.EmployerId == c.Id && j.ExpirationDate >= DateTime.Today)
                         .Select(j => new
@@ -66,5 +67,35 @@ namespace TestingApplication.Controllers.V1
                 .ToList();
             return Ok(data);
         }
+        [HttpGet]
+        //[Route("/")]
+        [ServiceFilter(typeof(ApiKeyAuthFilter))]
+        public IActionResult Company()
+        {
+            List<CompanyDTO>? items = _context.Companies
+                .Select(c => new CompanyDTO
+                {
+                    CompanyId = c.Id,
+                    CompanyName = c.Name,
+                    CompanyLogoLink = c.CompanyLogoLink,
+                })
+                .ToList();
+            return Ok(items);
+        }
+        [HttpGet]
+        [Route("id")]
+        [ServiceFilter(typeof(ApiKeyAuthFilter))]
+        public IActionResult CompanyById(int id)
+        {
+            List<CompanyDTO>? items = _context.Companies
+                .Select(c => new CompanyDTO
+                {
+                    CompanyId = c.Id,
+                    CompanyName = c.Name,
+                    CompanyLogoLink = c.CompanyLogoLink,
+                })
+                .Where(c => c.CompanyId == id).ToList();
+            return Ok(items);
+        }  
     }
 }
