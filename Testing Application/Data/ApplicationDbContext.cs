@@ -10,5 +10,6 @@ namespace TestingApplication.Data
         public DbSet<Job> Jobs { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Company> Companies { get; set; }
+        public DbSet<Tool> Tools { get; set; }
     }
 }

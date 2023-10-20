@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using TestingApplication.Data;
 using TestingApplication.Data_Transfer_Objects;
 
-namespace TestingApplication.Controllers
+namespace TestingApplication.Controllers.V1
 {
     [Route("/api/company")]
     [ApiController]
@@ -19,19 +19,29 @@ namespace TestingApplication.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            var data = _context.Companies
+            List<CompanyDTO>? data = _context.Companies
                 .Select(c => new
                 {
                     CompanyId = c.Id,
                     CompanyName = c.Name,
+                    //Active Jobs
                     CurrentJobs = _context.Jobs
-                        .Where(j => j.EmployerId == c.Id)
+                        .Where(j => j.EmployerId == c.Id && j.ExpirationDate >= DateTime.Today)
                         .Select(j => new
                         {
                             JobId = j.Id,
                             JobTitle = j.Title,
                         })
-                        .ToList()
+                        .ToList(),
+                    //Archived Jobs - Date Expired
+                    ArchivedJobs = _context.Jobs
+                        .Where(j => j.EmployerId == c.Id && j.ExpirationDate < DateTime.Today)
+                        .Select(j => new
+                        {
+                            JobId = j.Id,
+                            JobTitle = j.Title,
+                        })
+                        .ToList(),
                 })
                 .ToList()
                 .Select(c => new CompanyDTO
@@ -41,8 +51,15 @@ namespace TestingApplication.Controllers
                     CurrentJobs = c.CurrentJobs
                         .Select(j => new JobDTO
                         {
-                            JobId = j.JobId,
-                            JobTitle = j.JobTitle,
+                            Id = j.JobId,
+                            Title = j.JobTitle,
+                        })
+                        .ToList(),
+                    ArchivedJobs = c.ArchivedJobs
+                        .Select(j => new JobDTO
+                        {
+                            Id = j.JobId,
+                            Title = j.JobTitle,
                         })
                         .ToList()
                 })

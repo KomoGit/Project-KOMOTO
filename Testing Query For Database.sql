@@ -1,40 +1,62 @@
 USE KomoDb
 
-DROP DATABASE KomoDb
-
 DROP TABLE Jobs
-DROP TABLE __EFMigrationsHistory
 
-INSERT INTO Categories (Name) VALUES ('Sales and Marketing');
-INSERT INTO Categories (Name) VALUES ('IT and Software Development');
-INSERT INTO Categories (Name) VALUES ('Healthcare');
-INSERT INTO Categories (Name) VALUES ('Finance and Accounting');
-INSERT INTO Categories (Name) VALUES ('Engineering');
-INSERT INTO Categories (Name) VALUES ('Education');
-INSERT INTO Categories (Name) VALUES ('Customer Service');
-INSERT INTO Categories (Name) VALUES ('Retail');
-INSERT INTO Categories (Name) VALUES ('Hospitality and Tourism');
-INSERT INTO Categories (Name) VALUES ('Manufacturing');
-INSERT INTO Categories (Name) VALUES ('Construction');
-INSERT INTO Categories (Name) VALUES ('Human Resources');
-INSERT INTO Categories (Name) VALUES ('Art and Design');
-INSERT INTO Categories (Name) VALUES ('Legal');
-INSERT INTO Categories (Name) VALUES ('Media and Communications');
-INSERT INTO Categories (Name) VALUES ('Transportation and Logistics');
-INSERT INTO Categories (Name) VALUES ('Science');
-INSERT INTO Categories (Name) VALUES ('Real Estate');
-INSERT INTO Categories (Name) VALUES ('Agriculture');
-INSERT INTO Categories (Name) VALUES ('Non-Profit and Volunteer');
-INSERT INTO Categories (Name) VALUES ('Government');
-INSERT INTO Categories (Name) VALUES ('Pharmaceutical');
-INSERT INTO Categories (Name) VALUES ('Telecommunications');
-INSERT INTO Categories (Name) VALUES ('Energy');
-INSERT INTO Categories (Name) VALUES ('Environmental');
-INSERT INTO Categories (Name) VALUES ('Fashion and Beauty');
-INSERT INTO Categories (Name) VALUES ('Sports and Fitness');
-INSERT INTO Categories (Name) VALUES ('Consulting');
-INSERT INTO Categories (Name) VALUES ('Entertainment');
-INSERT INTO Categories (Name) VALUES ('Other');
+USE KomoDb
+DELETE FROM Categories
+
+INSERT INTO Categories (Name) VALUES 
+('Sales and Marketing'),
+('IT and Software Development'),
+('Healthcare'),
+('Finance and Accounting'),
+('Engineering'),
+('Education'),
+('Retail'),
+('Hospitality and Tourism'),
+('Fashion and Beauty'),
+('Manufacturing'),
+('Construction'),
+('Human Resources'),
+('Environmental'),
+('Art and Design'),
+('Pharmaceutical'),
+('Energy'),
+('Legal'),
+('Media and Communications'),
+('Transportation and Logistics'),
+('Telecommunications'),
+('Government'),
+('Agriculture'),
+('Non-Profit and Volunteer'),
+('Science'),
+('Real Estate'),
+('Sports and Fitness'),
+('Consulting'),
+('Entertainment'),
+('Other'),
+('Customer Service');
+
+INSERT INTO Tools(Name) VALUES
+('Visual Studio'),
+('Visual Studio Code'),
+('Eclipse'),
+('IntelliJ IDEA'),
+('Xcode'),
+('Android Studio'),
+('Git'),
+('GitHub'),
+('Bitbucket'),
+('Jenkins'),
+('Travis CI'),
+('Docker'),
+('Kubernetes'),
+('JIRA'),
+('Confluence'),
+('.NET Framework'),
+('C#'),
+('GoLang'),
+('Java');
 
 INSERT INTO Jobs (Title, Description, Link, CategoryId, ExpirationDate, PublishDate, EmployerId) VALUES
     ('Software Engineer', 'Develop software applications.', 'https://example.com/job1', 2, '2023-09-30', '2023-09-01', 1),
@@ -107,8 +129,11 @@ INSERT INTO Companies (Name) VALUES
 ('Frontier Software'),
 ('Pinnacle Innovations');
 
-    
+USE KomoDb
+SELECT * FROM Jobs WHERE CategoryId = 2
 
+USE KomoDb
+ALTER TABLE [Tools] DROP COLUMN JobId
 
 USE master;
 ALTER DATABASE [KomoDb] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
