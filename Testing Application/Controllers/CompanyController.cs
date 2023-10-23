@@ -23,7 +23,7 @@ namespace TestingApplication.Controllers
         [HttpGet]
         public async Task<ActionResult<Company>> Get()
         {
-            var company = await _companyService.GetAsync();
+            List<Company>? company = await _companyService.GetAsync();
             return Ok(company);
         }
 
