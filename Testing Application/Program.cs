@@ -1,8 +1,11 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 using TestingApplication.Authentication;
 using TestingApplication.Data;
+using TestingApplication.Libraries.Repository;
+using TestingApplication.Libraries;
+using TestingApplication.Library.Repository;
+using TestingApplication.Services;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +25,7 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Scheme = "ApiKeyScheme"
     });
-    OpenApiSecurityScheme? key = new OpenApiSecurityScheme()
+    OpenApiSecurityScheme? key = new()
     {
         Reference = new OpenApiReference
         {
@@ -31,15 +34,19 @@ builder.Services.AddSwaggerGen(c =>
         },
         In = ParameterLocation.Header
     };
-    OpenApiSecurityRequirement? requirement = new OpenApiSecurityRequirement
+    OpenApiSecurityRequirement? requirement = new()
     {
         { key, new List<string>() }
     };
     c.AddSecurityRequirement(requirement);
 });
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
+//Services
+builder.Services.Configure<ApplicationDbSettings>(builder.Configuration.GetSection("DatabaseSettings"));
+builder.Services.AddSingleton<MyMongoRepository>();
+builder.Services.AddSingleton<IFileManager, FileManager>();
+//Services based on Models.
+builder.Services.AddSingleton<CompanyService>();
 
 //Authorization & Authentication add here.
 builder.Services.AddScoped<ApiKeyAuthFilter>();
@@ -52,8 +59,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 });
 
 builder.Services.AddAutoMapper(typeof(Program));
-WebApplication? app = builder.Build();
 
+WebApplication? app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
