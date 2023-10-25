@@ -6,13 +6,13 @@ using TestingApplication.Libraries.Repository;
 using TestingApplication.Libraries;
 using TestingApplication.Library.Repository;
 using TestingApplication.Services;
+using Microsoft.EntityFrameworkCore;
 
 WebApplicationBuilder? builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
@@ -41,12 +41,17 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityRequirement(requirement);
 });
 
-//Services
+//MongoDb
 builder.Services.Configure<ApplicationDbSettings>(builder.Configuration.GetSection("DatabaseSettings"));
 builder.Services.AddSingleton<MyMongoRepository>();
+
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                  options.UseSqlServer(builder.Configuration.GetConnectionString("SlowDb")));
+
 builder.Services.AddSingleton<IFileManager, FileManager>();
 //Services based on Models.
 builder.Services.AddSingleton<CompanyService>();
+builder.Services.AddSingleton<JobService>();
 
 //Authorization & Authentication add here.
 builder.Services.AddScoped<ApiKeyAuthFilter>();
@@ -57,7 +62,6 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault;
     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
-
 builder.Services.AddAutoMapper(typeof(Program));
 
 WebApplication? app = builder.Build();
