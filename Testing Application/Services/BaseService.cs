@@ -1,17 +1,13 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Driver;
+﻿using MongoDB.Driver;
+using TestingApplication.Interfaces;
 using TestingApplication.Library.Repository;
 
 namespace TestingApplication.Services
 {
-    public interface IBaseEntity
-    {
-        [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
-        string? Id { get; set; }
-    }
-
+    /// <summary>
+    /// MongoDB Context basically.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class BaseService <T> where T : class, IBaseEntity, new ()
     {
         private readonly IMongoCollection<T> _collection;

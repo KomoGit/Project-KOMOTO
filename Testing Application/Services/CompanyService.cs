@@ -5,9 +5,6 @@ namespace TestingApplication.Services
 {
     public class CompanyService : BaseService<Company>
     {
-        public CompanyService(MyMongoRepository repository) : base(repository)
-        {
-
-        }
+        public CompanyService(MyMongoRepository repository) : base(repository) { }
     }
 }
