@@ -23,7 +23,7 @@ namespace TestingApplication.Controllers
         [ServiceFilter(typeof(ApiKeyAuthFilter))]
         public IActionResult Index()
         {
-            List<JobDTO>? items = _context.Jobs
+            List<JobDTO>? items = _context.ArchivedJobs
                 .Select(job => new JobDTO
                 {
                     Id = job.Id,
@@ -61,7 +61,7 @@ namespace TestingApplication.Controllers
         //Not including ("JobCategory") because the channel names are the categories.
         public IActionResult GetJobsByCategory(int id = 1)
         {
-            List<Job>? items = _context.Jobs
+            List<Job>? items = _context.ArchivedJobs
                 .Where(j => j.CategoryId == id && j.ExpirationDate >= DateTime.Today)
                 .Include("Employer")
                 .ToList();
@@ -119,7 +119,7 @@ namespace TestingApplication.Controllers
             {
                 return BadRequest("Id cannot be 0");
             }
-            List<JobDTO>? items = _context.Jobs
+            List<JobDTO>? items = _context.ArchivedJobs
                 .Select(job => new JobDTO
                 {
                     Id = job.Id,
@@ -161,7 +161,7 @@ namespace TestingApplication.Controllers
         [Route("archive")]
         public IActionResult GetArchivedJobs()
         {
-            List<JobDTO>? items = _context.Jobs
+            List<JobDTO>? items = _context.ArchivedJobs
                 .Select(job => new JobDTO
                 {
                     Id = job.Id,

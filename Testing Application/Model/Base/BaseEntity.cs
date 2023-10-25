@@ -1,6 +1,6 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using TestingApplication.Services;
+using TestingApplication.Interfaces;
 
 namespace TestingApplication.Model.Base
 {
