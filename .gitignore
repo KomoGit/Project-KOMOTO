@@ -1,5 +1,5 @@
 /.vs
 **/Testing Application/Data/Migrations
 **/Testing Application/Migration/.vs/
-
+**/Testing Application/Uploads/
 *.exe
