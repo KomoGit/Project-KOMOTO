@@ -6,7 +6,7 @@ namespace TestingApplication.Data_Transfer_Objects
 {
     public class JobDTO
     {
-        public int Id { get; set; }
+        public string Id { get; set; }
         #region Basic Data
         [Required]
         [MaxLength(100, ErrorMessage = "Cannot exceed 100")]
