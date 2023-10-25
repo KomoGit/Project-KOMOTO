@@ -1,21 +1,27 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 using TestingApplication.Enums;
+using TestingApplication.Model.Base;
 
 namespace TestingApplication.Model
 {
-    public class Job:BaseModel
+    public class Job:BaseEntity
     {
         #region Basic Data
         [Required]
         [MaxLength(100,ErrorMessage = "Cannot exceed 100")]
+        [BsonElement("jobTitle")]
         public string Title { get; set; }
         [Required]
         [MaxLength(150, ErrorMessage = "Cannot exceed 150")]
+        [BsonElement("jobDescription")]
         public string Description { get; set; }
         [Required]
         [MaxLength(200, ErrorMessage = "Cannot exceed 200")]
+        [BsonElement("jobLink")]
         public string Link { get; set; }
-        public int EmployerId { get; set; }
+        [BsonElement("jobEmployerId")]
+        public string EmployerId { get; set; }
         public Company? Employer { get; set; }
         #endregion
 
@@ -25,11 +31,16 @@ namespace TestingApplication.Model
         public bool ShowNumberOfViews { get; set; } = true;
         public int NumberOfHires { get; set; } = 1;
         public int NumberOfViews { get; set; }
+        [BsonElement("jobMaxSalary")]
         public float MaxSalary { get; set; } = 0;
+        [BsonElement("jobMinSalary")]
         public float MinSalary { get; set; } = 0;
         public bool DeterminedAtInterview { get; set; } = false;
+        [BsonElement("jobEmploymentType")]
         public EmploymentType EmploymentType { get; set; } = EmploymentType.FULLTIME;
+        [BsonElement("jobLocationType")]
         public LocationType LocationType { get; set; } = LocationType.OFFICE;
+        [BsonElement("jobSeniorityLevel")]
         public JobLevels SeniorityLevel { get; set; } = JobLevels.Junior;
         #endregion
 

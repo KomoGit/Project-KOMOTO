@@ -12,10 +12,10 @@ namespace TestingApplication.Model
         [BsonElement("companyName")]
         public string Name { get; set; }
 
-        //[Required]
-        //[MaxLength(300, ErrorMessage = "Cannot exceed 300")]
-        //[BsonElement("companyDescription")]
-        //public string Description { get; set; }
+        [Required]
+        [MaxLength(300, ErrorMessage = "Cannot exceed 300")]
+        [BsonElement("companyDescription")]
+        public string Description { get; set; }
 
         [BsonElement("companyLogoLink")]
         public string CompanyLogoLink { get; set; }
