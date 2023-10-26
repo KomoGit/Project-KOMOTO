@@ -5,9 +5,6 @@ namespace TestingApplication.Services
 {
     public class JobService:BaseService<Job>
     {
-        public JobService(MyMongoRepository repository):base(repository)
-        {
-            
-        }
+        public JobService(MyMongoRepository repository):base(repository) {}
     }
 }
