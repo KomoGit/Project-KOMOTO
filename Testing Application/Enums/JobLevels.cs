@@ -2,8 +2,8 @@
 {
     public enum JobLevels
     {
-        Junior = 1,
-        Mid = 2,
-        Senior = 3,
+        JUNIOR = 1,
+        MIDDLE = 2,
+        SENIOR = 3,
     }
 }

@@ -23,6 +23,9 @@ namespace TestingApplication.Model
         [BsonElement("jobEmployerId")]
         public string EmployerId { get; set; }
         public Company? Employer { get; set; }
+        [Required]
+        public Category? JobCategory { get; set; }
+        public bool IsArchived { get; set; } = false;
         #endregion
 
         #region Detailed Data
@@ -37,11 +40,11 @@ namespace TestingApplication.Model
         public float MinSalary { get; set; } = 0;
         public bool DeterminedAtInterview { get; set; } = false;
         [BsonElement("jobEmploymentType")]
-        public EmploymentType EmploymentType { get; set; } = EmploymentType.FULLTIME;
+        public EmploymentType WorkType { get; set; } = EmploymentType.FULLTIME;
         [BsonElement("jobLocationType")]
-        public LocationType LocationType { get; set; } = LocationType.OFFICE;
+        public LocationType WorkLocation { get; set; } = LocationType.OFFICE;
         [BsonElement("jobSeniorityLevel")]
-        public JobLevels SeniorityLevel { get; set; } = JobLevels.Junior;
+        public JobLevels SeniorityLevel { get; set; } = JobLevels.JUNIOR;
         #endregion
 
         #region Requirments
@@ -66,14 +69,9 @@ namespace TestingApplication.Model
         public string? AdditionalCertificates { get; set; }
         #endregion
 
-        #region Metadata
-        [Required]
-        public int CategoryId { get; set; }
-        public Category? JobCategory { get; set; }
-
-        [Required]
-        public DateTime ExpirationDate { get; set; } = DateTime.Now.AddDays(1);
+        #region Dates
         public DateTime PublishDate { get; set; } = DateTime.Now;
+        public DateTime ExpirationDate { get; set; } = DateTime.Now.AddDays(1);   
         #endregion
     }
 }
