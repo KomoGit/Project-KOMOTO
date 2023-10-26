@@ -56,7 +56,7 @@ namespace TestingApplication.Controllers
                         Title = j.Title
                     }).ToList(),
 
-                    ArchivedJobs = _context.ArchivedJobs
+                    ArchivedJobs = _context.Jobs
                     .Where(j => j.EmployerId == c.Id)
                     .Select(j => new JobDTO
                     {
