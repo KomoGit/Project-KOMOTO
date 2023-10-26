@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using TestingApplication.Authentication;
 using TestingApplication.Data;
 using TestingApplication.Data_Transfer_Objects;
-using TestingApplication.Enums;
 using TestingApplication.Library.Repository;
 using TestingApplication.Model;
 using TestingApplication.Services;
@@ -15,29 +14,34 @@ namespace TestingApplication.Controllers
     public class JobController : Controller
     {
         public readonly ApplicationDbContext _context;
+
         private readonly JobService _jobService;
+        private readonly CompanyService _companyService;
+
         public readonly IMapper _mapper;
         public JobController(MyMongoRepository repo,ApplicationDbContext context, IMapper mapper)
         {
             _mapper = mapper;
             _jobService = new(repo);
+            _companyService = new(repo);
             _context = context;
         }
 
         [HttpGet]
-        //[ServiceFilter(typeof(ApiKeyAuthFilter))]
         public async Task<IActionResult> Index()
         {
             List<Job> jobs = await _jobService.GetAsync();
+            List<Company>? companies = await _companyService.GetAsync();
+
 
             List<JobDTO>? items = jobs.Select(job => new JobDTO
-                {
+            {
                 Id = job.Id,
 
                 Title = job.Title,
                 Description = job.Description,
 
-                Employer = job.Employer,
+                Employer = companies.Where(c => c.Id.Equals(job.EmployerId)).First(),
                 JobCategory = job.JobCategory,
 
                 ExpirationDate = job.ExpirationDate,
@@ -48,8 +52,8 @@ namespace TestingApplication.Controllers
                 NumberOfHires = job.NumberOfHires,
                 NumberOfViews = job.NumberOfViews,
 
-                //EmploymentType = job.SeniorityLevel,
-                LocationType = job.WorkLocation,
+                EmploymentType = job.EmploymentType,
+                LocationType = job.LocationType,
 
                 MaximumAgeRequirement = job.MaximumAgeRequirement,
                 MinimumAgeRequirement = job.MinimumAgeRequirement,
@@ -58,105 +62,6 @@ namespace TestingApplication.Controllers
                 MenNeedNotApply = job.MenNeedNotApply,
                 WomenNeedNotApply = job.WomenNeedNotApply,
             }).ToList();
-            return Ok(items);
-        }
-
-        //[HttpGet]
-        //[Route("categoryid")]
-        ////Not including ("JobCategory") because the channel names are the categories.
-        //public IActionResult GetJobsByCategory(int id = 1)
-        //{
-        //    List<Job>? items = _context.Jobs
-        //        .Where(j => j.CategoryId == id && j.ExpirationDate >= DateTime.Today)
-        //        .Include("Employer")
-        //        .ToList();
-        //    return Ok(items);
-        //}
-
-        //[HttpGet]
-        //[Route("companyid")]
-        //public IActionResult GetJobsByCompany(int id)
-        //{
-        //    if (id == 0)
-        //    {
-        //        return BadRequest("Id cannot be 0");
-        //    }
-        //    List<JobDTO>? items = _context.Jobs
-        //        .Select(job => new JobDTO
-        //        {
-        //            Id = job.Id,
-        //            CategoryId = job.CategoryId,
-
-        //            Title = job.Title,
-        //            Description = job.Description,
-
-        //            Employer = job.Employer,
-        //            JobCategory = job.JobCategory,
-
-        //            ExpirationDate = job.ExpirationDate,
-        //            PublishDate = job.PublishDate,
-
-        //            Link = job.Link,
-
-        //            NumberOfHires = job.NumberOfHires,
-        //            NumberOfViews = job.NumberOfViews,
-
-        //            EmploymentType = job.EmploymentType,
-        //            LocationType = job.LocationType,
-
-        //            MaximumAgeRequirement = job.MaximumAgeRequirement,
-        //            MinimumAgeRequirement = job.MinimumAgeRequirement,
-        //            MinimumExperienceInYears = job.MinimumExperienceInYears,
-
-        //            MenNeedNotApply = job.MenNeedNotApply,
-        //            WomenNeedNotApply = job.WomenNeedNotApply,
-        //        })
-        //        .Where(j => j.Employer!.Id == id && j.ExpirationDate < DateTime.Today)
-        //        .ToList();
-        //    return Ok(items);
-        //}
-
-        [HttpGet]
-        [Route("companyandcategory")]
-        public IActionResult GetJobsByCompanyAndCategory(int id, Category category)
-        {
-            if (id == 0)
-            {
-                return BadRequest("Id cannot be 0");
-            }
-            List<JobDTO>? items = _context.Jobs
-                .Select(job => new JobDTO
-                {
-                    Id = job.Id,
-
-                    Title = job.Title,
-                    Description = job.Description,
-
-                    Employer = job.Employer,
-                    JobCategory = job.JobCategory,
-
-                    ExpirationDate = job.ExpirationDate,
-                    PublishDate = job.PublishDate,
-
-                    Link = job.Link,
-
-                    NumberOfHires = job.NumberOfHires,
-                    NumberOfViews = job.NumberOfViews,
-
-                    
-                    LocationType = job.WorkLocation,
-
-                    MaximumAgeRequirement = job.MaximumAgeRequirement,
-                    MinimumAgeRequirement = job.MinimumAgeRequirement,
-                    MinimumExperienceInYears = job.MinimumExperienceInYears,
-
-                    MenNeedNotApply = job.MenNeedNotApply,
-                    WomenNeedNotApply = job.WomenNeedNotApply,
-                })
-                .Where(j =>
-                j.JobCategory == category &&
-                j.ExpirationDate < DateTime.Today)
-                .ToList();
             return Ok(items);
         }
 
@@ -175,11 +80,14 @@ namespace TestingApplication.Controllers
                 //Salary
                 MaxSalary = data.MaxSalary,
                 MinSalary = data.MinSalary,
+                //Age
+                MinimumAgeRequirement = data.MinimumAgeRequirement,
+                MaximumAgeRequirement = data.MaximumAgeRequirement,
                 //Enums
                 JobCategory = data.JobCategory,
-                SeniorityLevel = data.SeniorityLevel,
-                WorkType = data.EmploymentType,
-                WorkLocation = data.LocationType,
+                JobLevels = data.JobLevels,
+                EmploymentType = data.EmploymentType,
+                LocationType = data.LocationType,
                 //Dates
                 PublishDate = data.PublishDate,
                 ExpirationDate = data.ExpirationDate,
@@ -203,12 +111,10 @@ namespace TestingApplication.Controllers
             //MongoDb - > SQL Server
             List<Job>? jobs = await _jobService.GetAsync();
             Job? job = jobs.Where(j => j.Id == id).First();
-            try{
-                _context.Jobs.Add(job);            
-            }catch(Exception e){
-                await Console.Out.WriteLineAsync(e.ToString());
-            }
+
+            _context.Jobs.Add(job);
             await _jobService.RemoveAsync(job.Id);
+
             _context.SaveChanges();
             return Ok($"{job.Id} - {job.Title} Sucessfully archived");
         }
@@ -239,7 +145,7 @@ namespace TestingApplication.Controllers
 
 
                     //EmploymentType = job.SeniorityLevel,
-                    LocationType = job.WorkLocation,
+                    LocationType = job.LocationType,
 
                     MaximumAgeRequirement = job.MaximumAgeRequirement,
                     MinimumAgeRequirement = job.MinimumAgeRequirement,

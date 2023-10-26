@@ -12,7 +12,6 @@ namespace TestingApplication.Data_Transfer_Objects
         public string Title { get; set; }
         public string Description { get; set; }
         public string Link { get; set; }
-        //public int EmployerId { get; set; }
         public Company? Employer { get; set; }
         #endregion
 
@@ -67,29 +66,26 @@ namespace TestingApplication.Data_Transfer_Objects
         #endregion
 
         #region Detailed Data
-        //How many people will be hired.
-        public bool ShowNumberOfHires { get; set; } = false;
-        public bool ShowNumberOfViews { get; set; } = true;
-        public int NumberOfHires { get; set; } = 1;
+        public int NumberOfHires { get; set; }
         [BsonElement("jobMaxSalary")]
-        public float MaxSalary { get; set; } = 0;
+        public float MaxSalary { get; set; }
         [BsonElement("jobMinSalary")]
-        public float MinSalary { get; set; } = 0;
-        public bool DeterminedAtInterview { get; set; } = false;
+        public float MinSalary { get; set; }
+
         [BsonElement("jobEmploymentType")]
-        public EmploymentType EmploymentType { get; set; } = EmploymentType.FULLTIME;
+        public EmploymentType EmploymentType { get; set; }
         [BsonElement("jobLocationType")]
-        public LocationType LocationType { get; set; } = LocationType.OFFICE;
+        public LocationType LocationType { get; set; }
         [BsonElement("jobSeniorityLevel")]
-        public JobLevels SeniorityLevel { get; set; } = JobLevels.JUNIOR;
+        public JobLevels JobLevels { get; set; }
         #endregion
 
         #region Requirments
-        public int MinimumExperienceInYears { get; set; } = 0;
-        public int MinimumAgeRequirement { get; set; } = 18;
-        public int MaximumAgeRequirement { get; set; } = 64;
-        public bool WomenNeedNotApply { get; set; } = false;
-        public bool MenNeedNotApply { get; set; } = false;
+        public int MinimumExperienceInYears { get; set; }
+        public int MinimumAgeRequirement { get; set; }
+        public int MaximumAgeRequirement { get; set; }
+        public bool WomenNeedNotApply { get; set; }
+        public bool MenNeedNotApply { get; set; }
         //Tools
         //Must have, if they do know these tools, they are excluded immediately.
         [Required]
@@ -107,7 +103,7 @@ namespace TestingApplication.Data_Transfer_Objects
 
         #region Dates
         public DateTime PublishDate { get; set; } = DateTime.Now;
-        public DateTime ExpirationDate { get; set; } = DateTime.Now.AddDays(1);
+        public DateTime ExpirationDate { get; set; } = DateTime.Now.AddMonths(1);
         #endregion
     }
 }

@@ -25,38 +25,37 @@ namespace TestingApplication.Model
         public Company? Employer { get; set; }
         [Required]
         public Category? JobCategory { get; set; }
-        public bool IsArchived { get; set; } = false;
+        public bool IsArchived { get; set; }
         #endregion
 
         #region Detailed Data
         //How many people will be hired.
-        public bool ShowNumberOfHires { get; set; } = false;
-        public bool ShowNumberOfViews { get; set; } = true;
-        public int NumberOfHires { get; set; } = 1;
+        public bool ShowNumberOfHires { get; set; }
+        public bool ShowNumberOfViews { get; set; }
+        public int NumberOfHires { get; set; }
         public int NumberOfViews { get; set; }
         [BsonElement("jobMaxSalary")]
-        public float MaxSalary { get; set; } = 0;
+        public float MaxSalary { get; set; }
         [BsonElement("jobMinSalary")]
-        public float MinSalary { get; set; } = 0;
-        public bool DeterminedAtInterview { get; set; } = false;
+        public float MinSalary { get; set; }
+        public bool DeterminedAtInterview { get; set; }
         [BsonElement("jobEmploymentType")]
-        public EmploymentType WorkType { get; set; } = EmploymentType.FULLTIME;
+        public EmploymentType EmploymentType { get; set; }
         [BsonElement("jobLocationType")]
-        public LocationType WorkLocation { get; set; } = LocationType.OFFICE;
+        public LocationType LocationType { get; set; }
         [BsonElement("jobSeniorityLevel")]
-        public JobLevels SeniorityLevel { get; set; } = JobLevels.JUNIOR;
+        public JobLevels JobLevels { get; set; }
         #endregion
 
         #region Requirments
-        public int MinimumExperienceInYears { get; set; } = 0;
-        public int MinimumAgeRequirement { get; set; } = 18;
-        public int MaximumAgeRequirement { get; set; } = 64;
-        public bool WomenNeedNotApply { get; set; } = false;
-        public bool MenNeedNotApply { get; set; } = false;
+        public int MinimumExperienceInYears { get; set; }
+        public int MinimumAgeRequirement { get; set; }
+        public int MaximumAgeRequirement { get; set; }
+        public bool WomenNeedNotApply { get; set; }
+        public bool MenNeedNotApply { get; set; }
         //Tools
         //Must have, if they do know these tools, they are excluded immediately.
-        [Required]
-        public string RequiredTools { get; set; }
+        public string? RequiredTools { get; set; }
         //Optional, whether the applicants know it or not doesn't matter much.
         public string? AdditionalTools { get; set; }
 
@@ -64,14 +63,13 @@ namespace TestingApplication.Model
         //Many-To-Many?
 
         //Certifiactes
-        [Required]
-        public string RequiredCertificates { get; set; } //Same as Tools
+        public string? RequiredCertificates { get; set; }
         public string? AdditionalCertificates { get; set; }
         #endregion
 
         #region Dates
-        public DateTime PublishDate { get; set; } = DateTime.Now;
-        public DateTime ExpirationDate { get; set; } = DateTime.Now.AddDays(1);   
+        public DateTime PublishDate { get; set; }
+        public DateTime ExpirationDate { get; set; } 
         #endregion
     }
 }
